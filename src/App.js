@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import logo from "./sun.png";
 import "./App.css";
 import Settings from "./Settings";
@@ -21,6 +21,8 @@ const fetchData = (location, setData) => {
 
 function WeatherResult({ data, onClose }) {
   const { location, current } = data;
+  var temperature = localStorage.getItem("Temperature");
+  var speed = localStorage.getItem("Speed");
 
   return (
     <div className="popup">
@@ -33,15 +35,16 @@ function WeatherResult({ data, onClose }) {
         <p>Country: {location.country}</p>
 
         <h3>Current Weather</h3>
-        <p>Temperature: {current.temp_c}°C</p>
+        <p>Temperature: {temperature === "Celsius" ? `${current.temp_c}°C` : `${current.temp_f}°F`}</p>
+
         <p>Condition: {current.condition.text}</p>
         <p>Humidity: {current.humidity}%</p>
 
         <h3>Additional Details</h3>
-        <p>Wind Speed: {current.wind_kph} km/h</p>
+        <p>Wind Speed: {speed === "Kilometers" ? `${current.wind_kph} km/h` : `${current.wind_mph} m/h`}</p>
         <p>Pressure: {current.pressure_mb} mb</p>
-        <p>Feels Like: {current.feelslike_c}°C</p>
-        <p>Visibility: {current.vis_km} km</p>
+        <p>Feels Like: {temperature === "Celsius" ? `${current.feelslike_c}°C` : `${current.feelslike_f}°F`}</p>
+        <p>Visibility: {speed === "Kilometers" ? `${current.vis_km} km` : `${current.vis_miles} m`}</p>
         <p>UV Index: {current.uv}</p>
 
         <button onClick={onClose} className="button">Close</button>
@@ -77,7 +80,7 @@ function Home() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
 
-        <p>Welcome to the Simple Weather App! Get started below.</p>
+        <h1>Welcome to the Simple Weather App! Get started below.</h1>
 
         <form onSubmit={handleSubmit} class="search-bar">
           <input type="search" placeholder="Enter Coordinates Here." name="search" pattern=".*\S.*" required onChange={handleChange} />

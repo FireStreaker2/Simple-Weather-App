@@ -1,26 +1,45 @@
-import React, { useState } from "react";
-import logo from './sun.png';
-import './App.css';
+import React from "react";
+import "./App.css";
 
 function Settings() {
+  const handleTemperatureChange = (event) => {
+    localStorage.setItem("Temperature", event.target.value);
+  };
+
+  const handleSpeedChange = (event) => {
+    localStorage.setItem("Speed", event.target.value);
+  };
+
+  const debug = () => {
+    alert("WIP");
+  }
   
   return (
     <div className="App" id="canvas">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-
-        <p>Settings</p>
+        <h1>Settings</h1>
 
         <div>
+          <p>Measurement</p>
+          <div className="group">
             <p>Temperature</p>
-            <input type="radio" value="Celcius" name="temperature" checked />
-            <label for="Celcius">Celcius</label>
-            <input type="radio" value="Farenheit" name="temperature" />
-            <label for="Farenheit">Farenheit</label>
+            <input type="radio" value="Celsius" name="temperature" onChange={handleTemperatureChange} />
+            <label for="Celsius">Celsius</label>
+            <input type="radio" value="Fahrenheit" name="temperature" onChange={handleTemperatureChange} />
+            <label for="Fahrenheit">Fahrenheit</label>
+          </div>
+
+          <div className="group">
+            <p>Speed</p>
+            <input type="radio" value="Miles" name="speed" onChange={handleSpeedChange} />
+            <label for="Miles">Miles</label>
+            <input type="radio" value="Kilometers" name="speed" onChange={handleSpeedChange} />
+            <label for="Kilometers">Kilometers</label>
+          </div>
         </div>
 
         <div>
-            <button>Show Debug Logs</button>
+          <button onClick={debug}>Show Debug Logs</button>
         </div>
 		
         <footer>
@@ -29,7 +48,6 @@ function Settings() {
           <a href="https://github.com/FireStreaker2/Simple-Weather-App/blob/main/LICENSE" class="link"> License |</a>
           <a href="/" class="link"> Home</a>
         </footer>
-
       </header>
     </div>
   );
