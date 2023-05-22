@@ -9,20 +9,38 @@ const fetchData = (location, setData) => {
   var api = `https://api.weatherapi.com/v1/current.json?key=${key}&q=${location}`;
 
   fetch(api)
-  .then((response) => (response.json()))
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error("Location not found");
+    }
+    return response.json();
+  })
   .then((data) => {
     setData(data);
   })
   .catch(error => {
+    localStorage.setItem("Error", true);
     console.error(error);
-    alert(error);
   });
 }
 
-function WeatherResult({ data, onClose }) {
+function WeatherResult({ data, onClose}) {
   const { location, current } = data;
   var temperature = localStorage.getItem("Temperature");
   var speed = localStorage.getItem("Speed");
+  var error = localStorage.getItem("Error");
+
+  if (error === true) {
+    return (
+      <div className="popup">
+        <div className="popup-content">
+          <p>Error: Location not found. Please make sure you have entered a valid location and try again. If this issue persists please contact support.</p>
+
+          <button onClick={onClose} className="button">Close</button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="popup">
@@ -53,16 +71,14 @@ function WeatherResult({ data, onClose }) {
   );
 }
 
-
 function Home() {
-	
 	const [inputValue, setInputValue] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
 	
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Form submitted with value:", inputValue);
+    localStorage.setItem("Query", inputValue)
     fetchData(inputValue, setWeatherData);
     setShowPopup(true);
   };
@@ -73,6 +89,7 @@ function Home() {
 
   const handleClosePopup = () => {
     setShowPopup(false);
+    localStorage.setItem("Error", false);
   };
   
   return (
@@ -82,9 +99,9 @@ function Home() {
 
         <h1>Welcome to the Simple Weather App! Get started below.</h1>
 
-        <form onSubmit={handleSubmit} class="search-bar">
+        <form onSubmit={handleSubmit} className="search-bar">
           <input type="search" placeholder="Enter Coordinates Here." name="search" pattern=".*\S.*" required onChange={handleChange} />
-          <button class="search-btn" type="submit">
+          <button className="search-btn" type="submit">
             <span>Search</span>
           </button>
         </form>
@@ -92,10 +109,10 @@ function Home() {
         {weatherData && showPopup && <WeatherResult data={weatherData} onClose={handleClosePopup} />}
 		
         <footer>
-          <a href="https://github.com/FireStreaker2/Simple-Weather-App" class="link">GitHub |</a>
-          <a href="https://github.com/FireStreaker2/Simple-Weather-App/issues" class="link"> Support |</a>
-          <a href="https://github.com/FireStreaker2/Simple-Weather-App/blob/main/LICENSE" class="link"> License |</a>
-          <a href="/settings" class="link"> Settings</a>
+          <a href="https://github.com/FireStreaker2/Simple-Weather-App" className="link">GitHub |</a>
+          <a href="https://github.com/FireStreaker2/Simple-Weather-App/issues" className="link"> Support |</a>
+          <a href="https://github.com/FireStreaker2/Simple-Weather-App/blob/main/LICENSE" className="link"> License |</a>
+          <a href="/settings" className="link"> Settings</a>
         </footer>
 
       </header>
