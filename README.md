@@ -22,13 +22,23 @@ A: it's for me to keep track of my progress and also store my files just in case
 Q: You suck at coding    
 A: i know
 
+## Setup
+```bash
+$ git clone https://github.com/FireStreaker2/Simple-Weather-App.git
+$ cd Simple-Weather-App
+$ npm i
+```
+For developing:
+```bash
+$ npm run dev
+```
+For production:
+```bash
+$ npm start
+```
+
 ## TODO
-* Use query to put into an API link (remember to keep it in the backend)
-* retrieve data from api
-* display data from api as a sort of popup (jquery?)
-* add a good color palette
-* clean up code
-* Connect domain and host (finish everything else first)
+* add more settings
 
 ## Credits
 <a href="https://reactjs.org/">React.JS</a>    

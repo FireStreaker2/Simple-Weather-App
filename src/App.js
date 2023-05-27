@@ -5,9 +5,7 @@ import "./App.css";
 import Settings from "./Settings";
 
 const fetchData = (location, setData) => {
-  const key = process.env.REACT_APP_KEY;
-  var api = `https://api.weatherapi.com/v1/current.json?key=${key}&q=${location}`;
-
+  var api = process.env.NODE_ENV === "development" ? `http://localhost:3001/api?q=${location}` : `/api?q=${location}`;
   fetch(api)
   .then((response) => {
     if (!response.ok) {
