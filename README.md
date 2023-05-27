@@ -34,8 +34,10 @@ $ npm run dev
 ```
 For production:
 ```bash
+$ npm run build
 $ npm start
 ```
+<mark>Please note that if you are selfhosting, you need to configure your ``.env`` file with a variable named ``KEY``, and it's value an API key from weatherapi.com</mark>
 
 ## TODO
 * add more settings
