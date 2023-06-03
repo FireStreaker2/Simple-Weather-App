@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 require("dotenv").config();
 
-const allowedOrigins = ["http://localhost:3001", "http://localhost:3000", "https://swa.firestreaker2.gq"];
+const allowedOrigins = ["http://localhost:3001", "http://localhost:3000", `http://localhost:${port}`, "https://swa.firestreaker2.gq"];
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -19,24 +19,24 @@ app.use(
     },
   })
 );
+app.use(express.json());
 
-
-app.get("/api", (req, res) => {
-    var location = req.query.q;
+app.post("/api", (req, res) => {
+    var location = req.body.q;
     const key = process.env.KEY;
     var api = `https://api.weatherapi.com/v1/current.json?key=${key}&q=${location}`;
 
     if (!location) {
-        res.status(500).send("Internal Server Error");
+        res.status(500).json({ Message: "Internal Server Error" });
     }
 
     axios.get(api)
     .then(response => {
-        res.send(response.data);
+        res.json({ Message: response.data });
     })
     .catch(error => {
         console.error(error);
-        res.status(500).send("Internal Server Error");
+        res.status(500).json({ Message: "Internal Server Error" });
     });
 });
 
@@ -44,6 +44,10 @@ if (fs.existsSync("./build/index.html")) {
     app.use(express.static(path.resolve(__dirname, "./build")));
     app.get("/", (req, res) => {
         res.sendFile(path.resolve(__dirname, "./build", "index.html"));
+    });
+
+    app.get("/settings", (req, res) => {
+      res.sendFile(path.resolve(__dirname, "./build", "index.html"));
     });
 }
 

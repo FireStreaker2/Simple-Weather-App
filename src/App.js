@@ -5,8 +5,22 @@ import "./App.css";
 import Settings from "./Settings";
 
 const fetchData = (location, setData) => {
-  var api = process.env.NODE_ENV === "development" ? `http://localhost:3001/api?q=${location}` : `/api?q=${location}`;
-  fetch(api)
+  var port = process.env.PORT || 3001;
+  var api = process.env.NODE_ENV === "development" ? `http://localhost:${port}/api` : `/api`;
+  
+  const data = {
+    q: location
+  };
+
+  const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+  };
+  
+  fetch(api, options)
   .then((response) => {
     if (!response.ok) {
       throw new Error("Location not found");
@@ -14,7 +28,7 @@ const fetchData = (location, setData) => {
     return response.json();
   })
   .then((data) => {
-    setData(data);
+    setData(data.Message);
   })
   .catch(error => {
     localStorage.setItem("Error", true);

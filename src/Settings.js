@@ -12,7 +12,7 @@ function Debug({ onClose }) {
         <h2>Debug Logs</h2>
 
         <div className="group">
-          <p>Temperatre Measurement: {temperature}</p>
+          <p>Temperature Measurement: {temperature}</p>
           <p>Speed Measurement: {speed}</p>
         </div>
 
